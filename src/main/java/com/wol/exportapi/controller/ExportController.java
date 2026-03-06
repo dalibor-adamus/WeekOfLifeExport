@@ -35,7 +35,7 @@ public class ExportController {
         this.parser = parser;
     }
 
-    @Operation(description = "Export all stored weeks to HTML")
+    @Operation(summary = "Export all stored weeks for a user to an HTML file, including photos, ratings, comments, and day descriptions")
     @GetMapping(value = "/users/{user}/weeks", produces = MediaType.TEXT_HTML_VALUE)
     public ResponseEntity<String> exportWeeksHTML(@PathVariable("user") @Parameter(example = "dalkos", required = true) String user) throws SQLException {
         List<Week> weeks = databaseRepository.getWeeks(getDatabaseName(user), 0);
@@ -71,7 +71,7 @@ public class ExportController {
                 .body(html.toString());
     }
 
-    @Operation(description = "Export all stored photos of the day to HTML")
+    @Operation(summary = "Export all stored 'Photo of the Day' images for a user to an HTML gallery file")
     @GetMapping(value = "/users/{user}/photo-of-the-day", produces = MediaType.TEXT_HTML_VALUE)
     public ResponseEntity<String> exportPhotoOfTheDayHTML(@PathVariable("user") @Parameter(example = "dalkos", description = "Author name in week of life or its part (if not provided, all will be returned)") String user) throws SQLException {
         List<PhotoOfTheDay> photos = databaseRepository.getPhotoOfTheDay(getDatabaseName("PhotoOfTheDay"), user);
@@ -98,7 +98,7 @@ public class ExportController {
                 .body(html.toString());
     }
 
-    @Operation(description = "Get statistics by user name")
+    @Operation(summary = "Retrieve statistics of 'Photo of the Day' contributions by user, sorted by count descending")
     @GetMapping("/statistics/photo-of-the-day")
     public List<Statistics> getPhotoOfTheDayStatistics() throws SQLException {
         return databaseRepository.getPhotoOfTheDayStatistics(getDatabaseName("PhotoOfTheDay")).stream()
@@ -106,7 +106,7 @@ public class ExportController {
                 .collect(Collectors.toList());
     }
 
-    @Operation(description = "Export all stored photos of the day to HTML")
+    @Operation(summary = "Export all stored Editor's Choice weeks for a user to an HTML file with descriptions and images")
     @GetMapping(value = "/users/{user}/editors-choices", produces = MediaType.TEXT_HTML_VALUE)
     public ResponseEntity<String> exportEditorsChoicesHTML(@RequestParam("user") @Parameter(example = "dalkos", description = "Author name in week of life or its part (if not provided, all will be returned)") String user) throws SQLException {
         List<EditorsChoice> photos = databaseRepository.getEditorsChoice(getDatabaseName("EditorsChoice"), user);
@@ -133,7 +133,7 @@ public class ExportController {
                 .body(html.toString());
     }
 
-    @Operation(description = "Get editor's choices statistics by user name")
+    @Operation(summary = "Retrieve statistics of Editor's Choice contributions by user, sorted by count descending")
     @GetMapping("/statistics/editors-choices")
     public List<Statistics> getEditorsChoicesStatistics() throws SQLException {
         return databaseRepository.getEditorsChoicesStatistics(getDatabaseName("EditorsChoice")).stream()

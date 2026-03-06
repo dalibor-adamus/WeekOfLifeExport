@@ -35,7 +35,7 @@ public class DownloadController {
         this.parser = parser;
     }
 
-    @Operation(description = "Parse weeks from Week of Life and store them together with days to local database &lt;user name&gt;.db. It will go from newest weeks until end or until some parsed week is already stored.")
+    @Operation(summary = "Download and store all weeks for a user from Week of Life website, including days and photos, starting from the specified page")
     @PostMapping("/users/{user}/weeks")
     public long storeAllWeeks(
             @PathVariable("user") @Parameter(example = "dalkos", required = true) String user,
@@ -56,7 +56,7 @@ public class DownloadController {
         return stored;
     }
 
-    @Operation(description = "Parse week comments and store them to local database &lt;user name&gt;.db. It will go from newest weeks for selected count of weeks.")
+    @Operation(summary = "Parse week comments and store them to local user's database file. It will go from newest weeks for selected count of weeks.")
     @PostMapping("/users/{user}/weeks/{week}/comments")
     public void storeWeekComments(
             @PathVariable(value = "user") @Parameter(example = "dalkos") String user,
@@ -68,12 +68,13 @@ public class DownloadController {
         }
     }
 
+    @Operation(summary = "Optimize the SQLite database by running VACUUM command to reclaim unused space")
     @PatchMapping("/weeks/vacuum")
     public void storeWeekComments(@RequestParam("userName") @Parameter(example = "dalkos", required = true) String userName) throws Exception {
         databaseRepository.callVacuum(getDatabaseName("dalkos"));
     }
 
-    @Operation(description = "Parse day descriptions for specific week and store them to local database &lt;user name&gt;.db. It will delete existing descriptions")
+    @Operation(summary = "Parse day descriptions for specific week and store them to local user's database file. It will delete existing descriptions")
     @PostMapping("/users/{user}/weeks/{week}/days/descriptions")
     public void storeDayDescriptions(
             @PathVariable(value = "user") @Parameter(example = "dalkos") String user,
@@ -85,7 +86,7 @@ public class DownloadController {
         }
     }
 
-    @Operation(description = "Parse photo of the day Week of Life page and store images together with author and date to local database PhotoOfTheDay.db")
+    @Operation(summary = "Download and store 'Photo of the Day' images from Week of Life website, including author information and dates")
     @PostMapping("/photo-of-the-day")
     public int parsePhotoOfTheDay(
             @RequestParam("page") @Parameter(example = "1", description = "Store all not existing photos from given page", required = true) int page,
@@ -105,7 +106,7 @@ public class DownloadController {
         return count;
     }
 
-    @Operation(description = "Parse editor's choice page and store week data to EditorsChoice.db")
+    @Operation(summary = "Download and store Editor's Choice weeks from Week of Life website, including descriptions, author details, and images")
     @PostMapping("/editors-choices")
     public int parseEditorsChoice(
             @RequestParam("page") @Parameter(example = "1", description = "Store all not existing editor's choices from given page", required = true) int page,
