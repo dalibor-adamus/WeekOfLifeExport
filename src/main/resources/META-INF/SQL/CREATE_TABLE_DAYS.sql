@@ -1,0 +1,5 @@
+CREATE TABLE IF NOT EXISTS days (
+    id INTEGER PRIMARY KEY,
+    week_id INTEGER NOT NULL,
+    day DATE NOT NULL
+);
